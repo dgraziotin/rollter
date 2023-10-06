@@ -5,16 +5,16 @@ RUN echo -e "http://dl-3.alpinelinux.org/alpine/edge/main\nhttp://dl-3.alpinelin
 
 # install packages
 RUN apk update && apk upgrade && \
-	apk add --no-cache tor i2pd git make automake autoconf go && \
+	apk add --no-cache tor i2pd git make automake autoconf go alpine-sdk && \
 	git clone https://github.com/tinyproxy/tinyproxy.git && \
 	cd tinyproxy && ./autogen.sh && make && make install && make clean && cd .. && rm -rf tinyproxy && \
-	git clone --branch netstack --single-branch https://github.com/yggdrasil-network/yggdrasil-go.git && \
-	cd yggdrasil-go && go build -o ../yggstack cmd/yggstack/main.go && go clean -cache && cd .. && rm -rf /yggdrasil-go && \
-	apk del git make automake autoconf go
+#	git clone --branch netstack --single-branch https://github.com/yggdrasil-network/yggdrasil-go.git && \
+#	cd yggdrasil-go && go build -o ../yggstack cmd/yggstack/main.go && go clean -cache && cd .. && rm -rf /yggdrasil-go && \
+	apk del git make automake autoconf go alpine-sdk
 
 # set configs
 COPY ./tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
-COPY ./yggdrasil.conf /etc/yggdrasil.conf
+#COPY ./yggdrasil.conf /etc/yggdrasil.conf
 RUN cp /etc/tor/torrc.sample /etc/tor/torrc
 
 
